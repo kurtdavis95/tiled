@@ -20,6 +20,8 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <iostream>
+
 #include "commandlineparser.h"
 #include "mainwindow.h"
 #include "languagemanager.h"

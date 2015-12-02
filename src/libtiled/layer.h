@@ -231,6 +231,7 @@ protected:
     float mOpacity;
     bool mVisible;
     Map *mMap;
+
 };
 
 

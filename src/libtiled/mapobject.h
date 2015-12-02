@@ -75,6 +75,14 @@ public:
               const QPointF &pos,
               const QSizeF &size);
 
+	friend bool operator<(const MapObject& l, const MapObject& r){
+		return (l.mId < r.mId);
+	}
+
+	friend bool operator==(const MapObject& l, const MapObject& r){ 
+		return (l.mId == r.mId); 
+	}
+
     /**
      * Returns the id of this object. Each object gets an id assigned that is
      * unique for the map the object is on.

@@ -38,6 +38,7 @@
 #include <QColor>
 #include <QList>
 #include <QMetaType>
+#include <set>
 
 namespace Tiled {
 
@@ -179,6 +180,9 @@ public:
 
     Layer *clone() const override;
 
+	void preserveObject(MapObject *mo);	
+	std::set<MapObject>* getPreservedObjects(){ return &mPreservedObjects; }
+
 protected:
     ObjectGroup *initializeClone(ObjectGroup *clone) const;
 
@@ -186,6 +190,8 @@ private:
     QList<MapObject*> mObjects;
     QColor mColor;
     DrawOrder mDrawOrder;
+
+	std::set<MapObject> mPreservedObjects;
 };
 
 

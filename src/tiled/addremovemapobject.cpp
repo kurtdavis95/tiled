@@ -24,6 +24,8 @@
 #include "mapobject.h"
 #include "objectgroup.h"
 #include "mapobjectmodel.h"
+#include "layer.h"
+#include <iostream>
 
 #include <QCoreApplication>
 
@@ -42,16 +44,21 @@ AddRemoveMapObject::AddRemoveMapObject(MapDocument *mapDocument,
     , mIndex(-1)
     , mOwnsObject(ownObject)
 {
+//	std::cout << "Constructor for addremovemapobject" << std::endl;
 }
 
 AddRemoveMapObject::~AddRemoveMapObject()
 {
     if (mOwnsObject)
         delete mMapObject;
+	
+//	std::cout << "Deconstructed sucessfully!" << std::endl;
 }
 
 void AddRemoveMapObject::addObject()
 {
+	//std::cout << "Adding Object" << std::endl;
+
     mMapDocument->mapObjectModel()->insertObject(mObjectGroup, mIndex,
                                                  mMapObject);
     mOwnsObject = false;
@@ -87,4 +94,22 @@ RemoveMapObject::RemoveMapObject(MapDocument *mapDocument,
                          parent)
 {
     setText(QCoreApplication::translate("Undo Commands", "Remove Object"));
+}
+
+PreserveMapObject::PreserveMapObject(MapDocument *mapDocument, 
+				     MapObject *mapObject, 
+				     ObjectGroup *og, 
+				     QUndoCommand *parent)
+	: AddRemoveMapObject(mapDocument,
+			     mapObject->objectGroup(),
+			     mapObject,
+			     false,
+			     parent)
+{
+	setText(QCoreApplication::translate("Undo Commands", "Remove Object"));
+
+	
+	//add object to it's layer's preservation structure
+	og->preserveObject(mapObject);
+	
 }

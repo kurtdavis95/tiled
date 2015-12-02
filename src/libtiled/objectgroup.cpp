@@ -249,3 +249,8 @@ ObjectGroup::DrawOrder Tiled::drawOrderFromString(const QString &string)
 
     return drawOrder;
 }
+
+void ObjectGroup::preserveObject(MapObject *mo)
+{
+	mPreservedObjects.insert(*mo);
+}

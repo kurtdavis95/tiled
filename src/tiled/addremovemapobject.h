@@ -89,6 +89,24 @@ public:
     { removeObject(); }
 };
 
+/**
+ * Undo command that adds an object to its owning layer's object preservation structure
+ */
+
+class PreserveMapObject : public AddRemoveMapObject
+{
+public:
+	PreserveMapObject(MapDocument *mapDocument, MapObject *mapObject,
+			ObjectGroup *og, QUndoCommand *parent = 0);
+
+	//TODO: undo and redo functionality; might be better to merge preservation functionality into RemoveMapObject somehow
+	void undo()
+	{/* remove from preservation structure*/};
+
+	void redo()
+	{/* add to preservation structure*/};
+};
+
 } // namespace Internal
 } // namespace Tiled
 

@@ -19,6 +19,9 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <iostream>
+#include <set>
+
 #include "mapdocument.h"
 
 #include "addremovelayer.h"
@@ -345,13 +348,35 @@ void MapDocument::resizeMap(const QSize &size, const QPoint &offset)
             // Remove objects that will fall outside of the map
             foreach (MapObject *o, objectGroup->objects()) {
                 if (!visibleIn(visibleArea, o, mRenderer)) {
+			//Add object to preservation data structre before removal
+			
+			mUndoStack->push(new PreserveMapObject(this, o, objectGroup));
+			std::cout << "Preserving object with mId: " << o->id() << std::endl;
+			
+
                     mUndoStack->push(new RemoveMapObject(this, o));
+
                 } else {
                     QPointF oldPos = o->position();
                     QPointF newPos = oldPos + pixelOffset;
                     mUndoStack->push(new MoveMapObject(this, o, newPos, oldPos));
                 }
             }
+
+		//Check for objects to be restored
+		
+			int restore_number = 0;
+			std::set<MapObject> *mPreservedObjects = objectGroup->getPreservedObjects();
+			foreach(MapObject o, *mPreservedObjects){
+				MapObject *op = &o;
+				if(visibleIn(visibleArea, op, mRenderer)){
+					std::cout << "Object with mId " << op->id() << " to be restored." << std::endl;
+					//map boundaries include preserved object, output to console
+					restore_number++;
+				}
+			}
+			std::cout << "Total objects to be restored: " << restore_number << std::endl;
+		
             break;
         }
         case Layer::ImageLayerType:

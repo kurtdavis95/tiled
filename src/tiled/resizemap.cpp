@@ -25,6 +25,8 @@
 
 #include <QCoreApplication>
 
+#include <iostream>
+
 namespace Tiled {
 namespace Internal {
 
@@ -53,6 +55,7 @@ void ResizeMap::swapSize()
     map->setHeight(mSize.height());
     mSize = oldSize;
 
+	//std::cout << "Map size changed." << std::endl;
     mMapDocument->emitMapChanged();
 }
 
